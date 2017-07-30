@@ -1,0 +1,59 @@
+scraping http://www.melodytoyota.com/used-inventory/index.htm?make=Toyota&model=Camry ...got 16 cars
+scraping http://www.melodytoyota.com/used-inventory/index.htm?start=16&make=Toyota&model=Camry& ...got 16 cars
+scraping http://www.melodytoyota.com/used-inventory/index.htm?start=32&make=Toyota&model=Camry& ...got 15 cars
+scraping http://www.toyotasunnyvale.com/used-inventory/index.htm?make=Toyota&model=Camry ...got 10 cars
+scraping http://www.toyota101.com/used-inventory/index.htm?make=Toyota&model=Camry ...got 3 cars
+scraping http://www.sftoyota.com/used-inventory/index.htm?make=Toyota&model=Camry ...got 10 cars
+scraping http://www.autonationtoyotahayward.com/used-inventory/index.htm?make=Toyota&model=Camry ...got 6 cars
+scraping http://www.hondaofstevenscreek.com/used-inventory/index.htm?make=Honda&model=Accord ...got 16 cars
+scraping http://www.hondaofstevenscreek.com/used-inventory/index.htm?start=16&make=Honda&model=Accord& ...got 16 cars
+scraping http://www.hondaofstevenscreek.com/used-inventory/index.htm?start=32&make=Honda&model=Accord& ...got 16 cars
+scraping http://www.hondaofstevenscreek.com/used-inventory/index.htm?start=48&make=Honda&model=Accord& ...got 16 cars
+scraping http://www.hondaofstevenscreek.com/used-inventory/index.htm?start=64&make=Honda&model=Accord& ...got 16 cars
+scraping http://www.hondaofstevenscreek.com/used-inventory/index.htm?start=80&make=Honda&model=Accord& ...got 16 cars
+scraping http://www.hondaofstevenscreek.com/used-inventory/index.htm?start=96&make=Honda&model=Accord& ...got 16 cars
+scraping http://www.hondaofstevenscreek.com/used-inventory/index.htm?start=112&make=Honda&model=Accord& ...got 16 cars
+scraping http://www.hondaofstevenscreek.com/used-inventory/index.htm?start=128&make=Honda&model=Accord& ...got 16 cars
+scraping http://www.hondaofstevenscreek.com/used-inventory/index.htm?start=144&make=Honda&model=Accord& ...got 16 cars
+scraping http://www.hondaofstevenscreek.com/used-inventory/index.htm?start=160&make=Honda&model=Accord& ...got 2 cars
+scraping http://www.autonationhondafremont.com/used-inventory/index.htm?make=Honda&model=Accord ...got 16 cars
+scraping http://www.autonationhondafremont.com/used-inventory/index.htm?start=16&make=Honda&model=Accord& ...got 1 cars
+scraping http://www.autonationhondafremont.com/used-inventory/index.htm?make=Honda&model=Accord ...got 16 cars
+scraping http://www.autonationhondafremont.com/used-inventory/index.htm?start=16&make=Honda&model=Accord& ...got 1 cars
+scraping http://www.hondaofserramonte.com/used-inventory/index.htm?make=Honda&model=Accord ...got 16 cars
+scraping http://www.hondaofserramonte.com/used-inventory/index.htm?start=16&make=Honda&model=Accord& ...got 16 cars
+scraping http://www.hondaofserramonte.com/used-inventory/index.htm?start=32&make=Honda&model=Accord& ...got 16 cars
+scraping http://www.hondaofserramonte.com/used-inventory/index.htm?start=48&make=Honda&model=Accord& ...got 16 cars
+scraping http://www.hondaofserramonte.com/used-inventory/index.htm?start=64&make=Honda&model=Accord& ...got 16 cars
+scraping http://www.hondaofserramonte.com/used-inventory/index.htm?start=80&make=Honda&model=Accord& ...got 16 cars
+scraping http://www.hondaofserramonte.com/used-inventory/index.htm?start=96&make=Honda&model=Accord& ...got 16 cars
+scraping http://www.hondaofserramonte.com/used-inventory/index.htm?start=112&make=Honda&model=Accord& ...got 16 cars
+scraping http://www.hondaofserramonte.com/used-inventory/index.htm?start=128&make=Honda&model=Accord& ...got 16 cars
+scraping http://www.hondaofserramonte.com/used-inventory/index.htm?start=144&make=Honda&model=Accord& ...got 16 cars
+scraping http://www.hondaofserramonte.com/used-inventory/index.htm?start=160&make=Honda&model=Accord& ...got 2 cars
+scraping http://www.sfhonda.com/used-inventory/index.htm?make=Honda&model=Accord ...skipping 2016 Accord EX-L V-6, 2mi, $27492 from sfhonda VIN=1HGCR3F87GA022682 because mileage too low
+skipping 2016 Accord EX-L V-6, 2mi, $27492 from sfhonda VIN=1HGCR3F83GA016250 because mileage too low
+got 11 cars
+scraping http://www.hondaofhayward.com/used-inventory/index.htm?make=Honda&model=Accord ...got 16 cars
+scraping http://www.hondaofhayward.com/used-inventory/index.htm?start=16&make=Honda&model=Accord& ...got 16 cars
+scraping http://www.hondaofhayward.com/used-inventory/index.htm?start=32&make=Honda&model=Accord& ...got 16 cars
+scraping http://www.hondaofhayward.com/used-inventory/index.htm?start=48&make=Honda&model=Accord& ...got 16 cars
+scraping http://www.hondaofhayward.com/used-inventory/index.htm?start=64&make=Honda&model=Accord& ...got 16 cars
+scraping http://www.hondaofhayward.com/used-inventory/index.htm?start=80&make=Honda&model=Accord& ...got 16 cars
+scraping http://www.hondaofhayward.com/used-inventory/index.htm?start=96&make=Honda&model=Accord& ...got 16 cars
+scraping http://www.hondaofhayward.com/used-inventory/index.htm?start=112&make=Honda&model=Accord& ...got 16 cars
+scraping http://www.hondaofhayward.com/used-inventory/index.htm?start=128&make=Honda&model=Accord& ...got 16 cars
+scraping http://www.hondaofhayward.com/used-inventory/index.htm?start=144&make=Honda&model=Accord& ...got 16 cars
+scraping http://www.hondaofhayward.com/used-inventory/index.htm?start=160&make=Honda&model=Accord& ...got 2 cars
+scraping http://www.southbayhonda.com/vehicle-category/used-vehicles/?make=Honda&model=Accord ...got 17 cars
+scraping http://www.citytoyota.com/vehicle-categories/used-vehicles/used-cars/?make=Toyota&model=Camry ...got 7 cars
+scraping http://www.fremonttoyota.com/search/used-toyota-camry/tp-mk63-md300/c:50/ ...got 21 cars
+scraping http://www.pierceytoyota.com/search/used-toyota-camry/tp-mk63-md300/c:50/ ...got 5 cars
+scraping http://www.larryhopkinshonda.com/search/used-honda-accord/tp-mk23-md124/c:50/ ...got 10 cars
+scraping http://www.andersonhonda.com/searchused.aspx?Make=Honda&Model=Accord+Sedan&pn=100 ...got 8 cars from andersonhonda
+scraping http://www.honda-rc.com/searchused.aspx?Make=Honda&Model=Accord+Sedan&pn=100 ...got 12 cars from honda-rc
+scraping http://www.honda-rc.com/searchused.aspx?Make=Honda&Model=Accord+Sdn&pn=100 ...got 2 cars from honda-rc
+scraping http://www.capitoltoyota.com/searchused.aspx?Make=Toyota&Model=Camry&pn=100 ...got 15 cars from capitoltoyota
+scraping http://www.capitolhonda.com/inventory.aspx?_used=true&_cpo=true&_makef=honda&_model=accord+sedan ...got 10 cars from capitolhonda
+scraping https://oceanhondaburlingame.com/wp-content/plugins/rev-trunk/_ajax.php?condition=used&make=Honda&model=Accord+Sedan&json=true&show=10&offset=0 ...got 8 cars from oceanhondaburlingame
+scraping http://www.putnamtoyota.com/toyota-used-cars-bay-area/refineChange/1/100/~/VehicleType_~Price1_~Make_Toyota~Model_/Model/Camry ...got 4 cars from putnamtoyota
