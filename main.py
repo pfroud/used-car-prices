@@ -141,7 +141,7 @@ def scrape_capitol_honda():
         trim = div.select("h3.ebiz-vdp-subtitle")[0].get_text()
 
         price = re.sub("[^0-9]", "", div.select("h4.money-sign-disp")[0].get_text())
-        vin = div.select("li")[6].get_text().replace("<strong>VIN #:</strong> ", "")
+        vin = div.select("li")[6].get_text().replace("VIN #: ", "")
         miles = re.sub("[^0-9]", "", div.select("li.mileage-units")[0].get_text().split(": ")[1])
 
         new_car = Car(base, year, model, trim, int(miles), int(price), vin)
@@ -205,7 +205,7 @@ def scrape_type_used_tp():
             try:
                 price = int(div.select('meta[itemprop="price"]')[0]["content"])
             except IndexError:
-                price = -1
+                continue
 
             try:
                 item_offered = div.select('span[itemprop="itemOffered"]')[0]
