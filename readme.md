@@ -2,7 +2,8 @@
 
 
 <p align="center" style="text-align: center">
-<img src="dashboard-screenshot.png?raw=true" alt="screenshot of dashboard">
+<a href="https://plot.ly/dashboard/pfroud0:4/present">
+<img src="dashboard-screenshot.png?raw=true" alt="screenshot of dashboard"></a>
 </p>
 
 
