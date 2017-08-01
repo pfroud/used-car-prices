@@ -1,5 +1,11 @@
 # Used car prices
 
+
+<p align="center" style="text-align: center">
+<img src="dashboard-screenshot.png?raw=true" alt="screenshot of dashboard">
+</p>
+
+
 Data from these dealerships:
 
 <table><tr><td>
