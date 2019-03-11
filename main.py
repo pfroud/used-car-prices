@@ -100,7 +100,8 @@ def scrape_putnam_toyota():
 
 
 def scrape_ocean_honda_burlingame():
-    url = "https://oceanhondaburlingame.com/wp-content/plugins/rev-trunk/_ajax.php?condition=used&make=Honda&model=Accord+Sedan&json=true&show=10&offset=0"
+    # url = "https://oceanhondaburlingame.com/wp-content/plugins/rev-trunk/_ajax.php?condition=used&make=Honda&model=Accord+Sedan&json=true&show=10&offset=0"
+    url = "https://oceanhondaburlingame.com/wp-content/plugins/r3/_ajax.php?json=true&output=victory-inventory-index&stock=57R04610,57R04607,57R06007,57R04617,57R05039,57R07026,57R05002,57R05030&sort=year-DESC"
     base = "oceanhondaburlingame"
     print(f"scraping {url} ...", end="", flush=True)
     r = requests.get(url, headers={"User-agent": "Python requests"})
@@ -166,7 +167,11 @@ def scrape_type_searchused_aspx():
 
         cars_on_this_url = []
         for div in soup.select("div.row.srpVehicle"):
-            price = re.sub("[^0-9]", "", div.select("span.primaryPrice")[0].get_text())
+            price = None
+            if base == "andersonhonda":
+                price = re.sub("[^0-9]", "", div.select("li.internetPrice span.pull-right")[0].get_text())
+            else:
+                price = re.sub("[^0-9]", "", div.select("span.primaryPrice")[0].get_text())
             miles = re.sub("[^0-9]", "", div.select("li.mileageDisplay")[0].get_text().split(": ")[1])
             vin = div.select("li.vinDisplay")[0].get_text().split(": ")[1]
             vehicle_title = div.select("h2.vehicleTitle")[0].get_text().strip()
