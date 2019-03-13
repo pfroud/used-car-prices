@@ -7,29 +7,37 @@ import json
 
 class Car:
     def __init__(self, dealer, year, model, trim, miles, price, vin):
-        self.dealer = dealer
-        self.year = year
-        self.model = model
-        self.trim = trim
-        self.miles = miles
+        self.dealership_name = dealer
+        self.model_year = year
+        self.model_name = model
+        self.trim_level_name = trim
+        self.odometer_miles = miles
         self.price = price
         self.vin = vin
 
     def __str__(self):
-        return f"{self.year} {self.model} {self.trim}, {self.miles}mi, ${self.price} from {self.dealer} VIN={self.vin}"
+        return f"{self.model_year} {self.model_name} {self.trim_level_name}, {self.odometer_miles}mi, ${self.price} from {self.dealership_name} VIN={self.vin}"
 
     def get_csv_row(self):
-        return f"{self.year},{self.model},{self.trim},{self.miles},{self.price},{self.dealer},{self.vin}\n"
+        return f"{self.model_year},{self.model_name},{self.trim_level_name},{self.odometer_miles},{self.price},{self.dealership_name},{self.vin}\n"
 
 
 def main():
-    scrape_type_used_inventory()
-    scrape_type_vehicle_category()
-    scrape_type_used_tp()
-    scrape_type_searchused_aspx()
-    scrape_capitol_honda()
-    scrape_ocean_honda_burlingame()
-    scrape_putnam_toyota()
+    """
+    Automatically scrapes data about used Camrys and Accords from the websites of dealerships in the San Fransisco Bay
+    Area.
+
+    Some dealerships use the same software to run their online listings. We can identify this because the website URLs
+    have similar structures. 
+    """
+    all_cars = []
+    scrape_type_used_inventory(all_cars)
+    scrape_type_vehicle_category_used_vehicles(all_cars)
+    scrape_type_used_tp(all_cars)
+    scrape_type_searchused_dot_aspx(all_cars)
+    scrape_capitol_honda(all_cars)
+    scrape_ocean_honda_burlingame(all_cars)
+    scrape_putnam_toyota(all_cars)
 
     with open("output.csv", "w") as f:
         f.write("year,model,trim,miles,price,dealer,vin\n")
@@ -37,41 +45,18 @@ def main():
             f.write(car.get_csv_row())
 
 
-def scrape_stevens_creek_toyota():
-    raise Exception("This doesn't work - they use some bullshit async stuff")
-    url = "http://www.stevenscreektoyota.com/used-vehicles/#action=im_ajax_call&perform=get_results&_post_id=5&make%5B%5D=Toyota&page=1&show_all_filters=false&model%5B%5D=Camry"
-    base = "stevenscreektoyota"
-    print(f"scraping {url} ...", end="", flush=True)
-    r = requests.get(url, headers={"User-agent": "Python requests"})
-    r.raise_for_status()
-    soup = BeautifulSoup(r.text, "html.parser")
+def scrape_putnam_toyota(all_cars):
+    """
+    Scrapes used Camry listings from the Putnam Toyota website and adds them to the given list of cars.
 
-    cars_on_this_url = []
-    for div in soup.select("div.vehicle.list-view"):
-        vin = div.select("div.vehicle-overview")[0]["id"]
-        price = re.sub("[^0-9]", "", soup.select("span.price")[0].get_text())
-        miles = div.select("li")[3].select("span.detail-content")[0].get_text().replace(",", "")
-
-        new_car = Car(base, div["data-year"], div["data-model"], div["data-trim"], int(miles), int(price), vin)
-        # print(f"added {new_car}")
-        cars_on_this_url.append(new_car)
-
-    print(f"got {len(cars_on_this_url)} cars from " + base)
-
-    # other_pages = soup.select("div.pagination-control li:not(.label):not(.active) a")
-    # if other_pages:
-    #     other_pages_top_only = other_pages[:len(other_pages) / 2]
-
-    all_cars.extend(cars_on_this_url)
-
-
-def scrape_putnam_toyota():
+    :param all_cars: list of cars scraped so far in this run.
+    """
     url = "http://www.putnamtoyota.com/toyota-used-cars-bay-area/refineChange/1/100/~/VehicleType_~Price1_~Make_Toyota~Model_/Model/Camry"
-    base = "putnamtoyota"
+    dealer = "putnamtoyota"
     print(f"scraping {url} ...", end="", flush=True)
-    r = requests.get(url, headers={"User-agent": "Python requests"})
-    r.raise_for_status()
-    soup = BeautifulSoup(r.text, "html.parser")
+    request = requests.get(url, headers={"User-agent": "Python requests"})
+    request.raise_for_status()
+    soup = BeautifulSoup(request.text, "html.parser")
 
     cars_on_this_url = []
     for div in soup.select("div.vehicleRow"):
@@ -86,11 +71,10 @@ def scrape_putnam_toyota():
         model = info[2]
         trim = " ".join(info[3:])
 
-        new_car = Car(base, year, model, trim, int(miles), int(price), vin)
-        # print(f"added {new_car}")
+        new_car = Car(dealer, year, model, trim, int(miles), int(price), vin)
         cars_on_this_url.append(new_car)
 
-    print(f"got {len(cars_on_this_url)} cars from " + base)
+    print(f"got {len(cars_on_this_url)} cars from " + dealer)
 
     # other_pages = soup.select("div.pagination-control li:not(.label):not(.active) a")
     # if other_pages:
@@ -99,14 +83,19 @@ def scrape_putnam_toyota():
     all_cars.extend(cars_on_this_url)
 
 
-def scrape_ocean_honda_burlingame():
+def scrape_ocean_honda_burlingame(all_cars):
+    """
+    Scrapes used Accord listings from the Ocean Honda of Burlingame website and adds them to the given list of cars.
+
+    :param all_cars: list of cars scraped so far in this run.
+    """
     # url = "https://oceanhondaburlingame.com/wp-content/plugins/rev-trunk/_ajax.php?condition=used&make=Honda&model=Accord+Sedan&json=true&show=10&offset=0"
     url = "https://oceanhondaburlingame.com/wp-content/plugins/r3/_ajax.php?json=true&output=victory-inventory-index&stock=57R04610,57R04607,57R06007,57R04617,57R05039,57R07026,57R05002,57R05030&sort=year-DESC"
-    base = "oceanhondaburlingame"
+    dealer = "oceanhondaburlingame"
     print(f"scraping {url} ...", end="", flush=True)
-    r = requests.get(url, headers={"User-agent": "Python requests"})
-    r.raise_for_status()
-    soup = BeautifulSoup(json.loads(r.text)["view"], "html.parser")
+    request = requests.get(url, headers={"User-agent": "Python requests"})
+    request.raise_for_status()
+    soup = BeautifulSoup(json.loads(request.text)["view"], "html.parser")
 
     cars_on_this_url = []
     for div in soup.select("div.col-md-12.mobList"):
@@ -117,22 +106,26 @@ def scrape_ocean_honda_burlingame():
         trim = div.select("span.listModel")[0].get_text()
         vin = div.select("li")[2].get_text().replace("VIN: ", "")  # check this
 
-        new_car = Car(base, year, model, trim, int(miles), int(price), vin)
-        # print(f"added {new_car}")
+        new_car = Car(dealer, year, model, trim, int(miles), int(price), vin)
         cars_on_this_url.append(new_car)
 
-    print(f"got {len(cars_on_this_url)} cars from " + base)
+    print(f"got {len(cars_on_this_url)} cars from " + dealer)
 
     all_cars.extend(cars_on_this_url)
 
 
-def scrape_capitol_honda():
+def scrape_capitol_honda(all_cars):
+    """
+    Scrapes used Accord listings from the Capitol Honda website and adds them to the given list of cars.
+
+    :param all_cars: list of cars scraped so far in this run.
+    """
     url = "http://www.capitolhonda.com/inventory.aspx?_used=true&_cpo=true&_makef=honda&_model=accord+sedan"
-    base = "capitolhonda"
+    dealer = "capitolhonda"
     print(f"scraping {url} ...", end="", flush=True)
-    r = requests.get(url)
-    r.raise_for_status()
-    soup = BeautifulSoup(r.text, "html.parser")
+    request = requests.get(url)
+    request.raise_for_status()
+    soup = BeautifulSoup(request.text, "html.parser")
 
     cars_on_this_url = []
     for div in soup.select("div.srp-vehicle-block"):
@@ -145,11 +138,10 @@ def scrape_capitol_honda():
         vin = div.select("li")[6].get_text().replace("VIN #: ", "")
         miles = re.sub("[^0-9]", "", div.select("li.mileage-units")[0].get_text().split(": ")[1])
 
-        new_car = Car(base, year, model, trim, int(miles), int(price), vin)
-        # print(f"added {new_car}")
+        new_car = Car(dealer, year, model, trim, int(miles), int(price), vin)
         cars_on_this_url.append(new_car)
 
-    print(f"got {len(cars_on_this_url)} cars from " + base)
+    print(f"got {len(cars_on_this_url)} cars from " + dealer)
 
     # other_pages = soup.select("div.pagination-control li:not(.label):not(.active) a")
     # if other_pages:
@@ -158,17 +150,35 @@ def scrape_capitol_honda():
     all_cars.extend(cars_on_this_url)
 
 
-def scrape_type_searchused_aspx():
-    def add_cars_from_url(base, url):
+def scrape_type_searchused_dot_aspx(all_cars):
+    """
+    Scrapes used car listings from dealership websites which have "searchused.aspx" in the URL.
+
+    Four dealerships are scraped:
+    * Anderson Honda
+    * Honda Redwood City, which has since been renamed Primo Honda
+    * Capitol Toyota
+
+    :param all_cars: list of cars scraped so far in this run.
+    """
+
+    def add_cars_from_url(dealership_name, url):
+        """
+        Scrapes cars from a dealership website where the URL contains "searchused.aspx", and adds them to the list of
+        all cars scraped in this run.
+
+        :param dealership_name: name of the dealer
+        :param url: location of the webpage to scrape
+        """
         print(f"scraping {url} ...", end="", flush=True)
-        r = requests.get(url, headers={"User-agent": "Python requests"})
-        r.raise_for_status()
-        soup = BeautifulSoup(r.text, "html.parser")
+        request = requests.get(url, headers={"User-agent": "Python requests"})
+        request.raise_for_status()
+        soup = BeautifulSoup(request.text, "html.parser")
 
         cars_on_this_url = []
         for div in soup.select("div.row.srpVehicle"):
             price = None
-            if base == "andersonhonda":
+            if dealership_name == "andersonhonda":
                 price = re.sub("[^0-9]", "", div.select("li.internetPrice span.pull-right")[0].get_text())
             else:
                 price = re.sub("[^0-9]", "", div.select("span.primaryPrice")[0].get_text())
@@ -182,28 +192,51 @@ def scrape_type_searchused_aspx():
                 model = split_on_space[2] + " " + split_on_space[3]
             year = split_on_space[0]
             trim = vehicle_title.split(model)[1].strip()
-            new_car = Car(base, year, model, trim, int(miles), int(price), vin)
-            # print(f"added {new_car}")
+            new_car = Car(dealership_name, year, model, trim, int(miles), int(price), vin)
             cars_on_this_url.append(new_car)
 
-        print(f"got {len(cars_on_this_url)} cars from " + base)
+        print(f"got {len(cars_on_this_url)} cars from " + dealership_name)
         all_cars.extend(cars_on_this_url)
 
-    # for base in ["honda-rc", "andersonhonda"]:
-    #     add_cars_from_url(base, "http://www." + base + ".com/searchused.aspx?Make=Honda&Model=Accord+Sedan&pn=100")
     add_cars_from_url("andersonhonda",
                       "http://www.andersonhonda.com/searchused.aspx?Make=Honda&Model=Accord+Sedan&pn=100")
+
+    # honda-rc.com lists "Accord Sedan" and "Accord Sdn" separately, which is silly
     add_cars_from_url("honda-rc", "http://www.honda-rc.com/searchused.aspx?Make=Honda&Model=Accord+Sedan&pn=100")
     add_cars_from_url("honda-rc", "http://www.honda-rc.com/searchused.aspx?Make=Honda&Model=Accord+Sdn&pn=100")
+
     add_cars_from_url("capitoltoyota", "http://www.capitoltoyota.com/searchused.aspx?Make=Toyota&Model=Camry&pn=100")
 
 
-def scrape_type_used_tp():
+def scrape_type_used_tp(all_cars):
+    """
+    Scrapes used car listings from dealership websites with URLs of the form:
+    http://www.<domain>.com/search/used-<make_name>-<model_name>/tp-mk<make_code>-md<model_code>/c:<results_per_page>/
+
+    where:
+    * <domain> is "fremonttoyota", "pierceytoyota", or "larryhopkinshonda"
+    * <make_name> is "toyota" or "honda"
+    * <model_name> is "camry" or "accord"
+    * <make_code> and <model_code> are chosen by the dealership
+    * <results_per_page> is how many search results to display at a time, maximum 50
+
+    I don't know what "tp" in the URL stands for.
+
+    :param all_cars: list of cars scraped so far in this run.
+    """
+
     def add_cars_from_url(base, url):
+        """
+        Scrapes cars from a dealership website where the URL contains "/tp-mk". See parent function for detailed
+        description of the form of the URL.
+
+        :param dealership_name: name of the dealer
+        :param url: location of the webpage to scrape
+        """
         print(f"scraping {url} ...", end="", flush=True)
-        r = requests.get(url, headers={"User-agent": "Python requests"})
-        r.raise_for_status()
-        soup = BeautifulSoup(r.text, "html.parser")
+        request = requests.get(url, headers={"User-agent": "Python requests"})
+        request.raise_for_status()
+        soup = BeautifulSoup(request.text, "html.parser")
 
         cars_on_this_url = []
         for div in soup.select("div.srp_vehicle_item_container"):
@@ -224,24 +257,41 @@ def scrape_type_used_tp():
             trim = item_offered.select('meta[itemprop="name"]')[0]["content"].split(model)[1].strip()
 
             new_car = Car(base, year, model, trim, int(miles), int(price), vin)
-            # print(f"added {new_car}")
             cars_on_this_url.append(new_car)
 
         print(f"got {len(cars_on_this_url)} cars")
         all_cars.extend(cars_on_this_url)
 
-    for base in ["fremonttoyota", "pierceytoyota"]:
-        add_cars_from_url(base, "http://www." + base + ".com/search/used-toyota-camry/tp-mk63-md300/c:50/")
+    for dealer in ["fremonttoyota", "pierceytoyota"]:
+        add_cars_from_url(dealer, "http://www." + dealer + ".com/search/used-toyota-camry/tp-mk63-md300/c:50/")
+
     add_cars_from_url("larryhopkinshonda",
                       "http://www.larryhopkinshonda.com/search/used-honda-accord/tp-mk23-md124/c:50/")
 
 
-def scrape_type_vehicle_category():
+def scrape_type_vehicle_category_used_vehicles(all_cars):
+    """
+    Scrapes used car listings from dealership websites which have "/vehicle-categories/used-vehicles/" in the URL.
+
+    Two dealerships are scraped:
+    * South Bay Honda
+    * City Toyota
+
+    :param all_cars: list of cars scraped so far in this run.
+    """
+
     def add_cars_from_url(base, url, is_toyota):
+        """
+        Scrapes cars from a dealership website where the URL contains "/vehicle-categories/used-vehicles/", and adds
+        them to the list of all cars scraped in this run.
+
+        :param dealership_name: name of the dealer
+        :param url: location of the webpage to scrape
+        """
         print(f"scraping {url} ...", end="", flush=True)
-        r = requests.get(url)
-        r.raise_for_status()
-        soup = BeautifulSoup(r.text, "html.parser")
+        request = requests.get(url)
+        request.raise_for_status()
+        soup = BeautifulSoup(request.text, "html.parser")
 
         cars_on_this_url = []
         for article in soup.select("article"):
@@ -257,7 +307,6 @@ def scrape_type_vehicle_category():
             if price > 1000000:
                 print(f"skipping {new_car} because price too high")
                 continue
-            # print(f"added {new_car}")
             cars_on_this_url.append(new_car)
 
         print(f"got {len(cars_on_this_url)} cars")
@@ -270,8 +319,25 @@ def scrape_type_vehicle_category():
                       True)
 
 
-def scrape_type_used_inventory():
+def scrape_type_used_inventory(all_cars):
+    """
+    Scrapes used car listings from dealership websites which have "/used-inventory/" in the URL.
+
+    Two dealerships are scraped:
+    * South Bay Honda
+    * City Toyota
+
+    :param all_cars: list of cars scraped so far in this run.
+    """
+
     def add_cars_from_url(base, url):
+        """
+        Scrapes cars from a dealership website where the URL contains "/used-inventory/", and adds
+        them to the list of all cars scraped in this run.
+
+        :param dealership_name: name of the dealer
+        :param url: location of the webpage to scrape
+        """
         print(f"scraping {url} ...", end="", flush=True)
         r = requests.get(url)
         r.raise_for_status()
@@ -283,7 +349,6 @@ def scrape_type_used_inventory():
                 re.sub("[^0-9]", "", div.find(lambda e: e.text == "Mileage:").find_next_sibling("dd").get_text()))
             new_car = Car(base, int(div["data-year"]), div["data-model"], div["data-trim"], mileage,
                           round(float((b64decode(div["data-internetprice"])))), div["data-vin"])
-            # print(f"added {new_car}")
             if mileage < 10:
                 print(f"skipping {new_car} because mileage too low")
                 continue
@@ -304,5 +369,4 @@ def scrape_type_used_inventory():
         add_cars_from_url(url_base, "http://www." + url_base + ".com/used-inventory/index.htm?make=Honda&model=Accord")
 
 
-all_cars = []
 main()
