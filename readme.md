@@ -1,9 +1,9 @@
 # Used car prices
 
-View results of 700+ cars at **[https://plot.ly/dashboard/pfroud0:4/present](https://plot.ly/dashboard/pfroud0:4/present)**!
+View results of 700+ cars at **[https://chart-studio.plotly.com/dashboard/pfroud0:4/view](https://chart-studio.plotly.com/dashboard/pfroud0:4/view)**!
 
 <p align="center" style="text-align: center">
-<a href="https://plot.ly/dashboard/pfroud0:4/present">
+<a href="https://chart-studio.plotly.com/dashboard/pfroud0:4/view">
 <img src="dashboard-screenshot.png?raw=true" alt="screenshot of graphs"></a>
 </p>
 
